@@ -3,11 +3,17 @@ def cifra(dado, chave, modo):
     mensagemRecebida = ''
     for i in dado:
         index = alfabeto.find(i) #Acha a posição da letra no alfabeto, e guarda dentro de index
+            
         if index == -1:
             mensagemRecebida += i  #Caso o caractere não esteja dentro da variável alfabeto, ele o mantém e pula pro próximo
         else:
             novoIndex = index + chave if modo == 1 else index - chave  #Lida com o caracter de acordo com o modo, somando ou diminuindo a posição com a chave
-            mensagemRecebida += alfabeto[novoIndex:novoIndex+1] #procura no alfabeto a letra que corresponde as posições de novoIndex, uma por uma, e devolve pra variável
+            print(novoIndex)
+            if(novoIndex >= 26):
+                novoIndex -= 26
+                print(novoIndex) 
+            mensagemRecebida += alfabeto[novoIndex:novoIndex+1] #procura no alfabeto a letra que corresponde as posições de novoIndex, uma por uma, e devolve pra variáv
+        
     return mensagemRecebida.lower()
 
 def verificaChave(chave):
