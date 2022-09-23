@@ -4,6 +4,9 @@ import requests
 
 app = FastAPI()
 
+lista = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789, ’.'
+
+
 @app.get('/')
 
 def read_root():
@@ -16,13 +19,16 @@ def get_cifra():
     json = response.json()
     key = randrange(1,27)
     phrase = str(json['facts'])
+    originalPhrase = str(json['facts'])
 
-    for ch in ["'", '[', ']']:
-        if ch in phrase:
+    phrase = phrase.upper()
+    copia = phrase
+
+    for ch in copia:
+        if ch not in lista:
             phrase = phrase.replace(ch, '')
             
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    phrase = phrase.upper()
     newPhrase = ''
     for i in phrase:
         index = alphabet.find(i)
@@ -36,7 +42,7 @@ def get_cifra():
             
         newPhrase.lower()
     
-    return ("Frase Criptografada", newPhrase, "Chave", key, "Frase Original", phrase)
+    return ("Frase Criptografada", newPhrase, "Chave", key, "Frase Original", originalPhrase)
 
 @app.post('/resolvecifra/{key}/{phrase}')
 
@@ -45,6 +51,10 @@ def resolve_Cifra(key, phrase):
     phrase = phrase.upper()
     key = int(key)
     newPhrase = ''
+    copia = phrase
+    for ch in copia:
+        if ch not in lista:
+            phrase = phrase.replace(ch, '')
     for i in phrase:
         index = alphabet.find(i) 
         if index == -1:
