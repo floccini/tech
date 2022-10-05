@@ -31,11 +31,11 @@ def get_cifra():
     json = response.json()
 
     response2 = requests.get('https://api.thedogapi.com/v1/breeds?limit=10&page=0')
-    json2 = response2.json() #retorna 10 names de raças diferentes
-    size = len(json2) #size = 10
+    json2 = response2.json() 
+    size = len(json2) 
     nome = []
     for i in range(size):
-        nome.insert(i, (str(json[i]['name']))) #o código quebra nesse for
+        nome.insert(i, (str(json2[i]['name']))) 
 
     key = randrange(1,27)
     phrase = str(json['facts'])
@@ -62,11 +62,21 @@ def get_cifra():
             
         newPhrase.lower()
     fato = newPhrase
+
     comando = f"""INSERT INTO fatos(fato) VALUES ('{fato}')"""
     cursor.execute(comando)
     cursor.commit()
+
+    for i in range(size):
+        comando2 = f"""INSERT INTO racas(nome) VALUES ('{nome[i]}')"""
+        cursor.execute(comando2)
+        cursor.commit()
+
+    comando3 = """SELECT f.fato, r.nome FROM fatos as f JOIN racas as r on f.fatoId = r.racaId"""
+    cursor.execute(comando3)
+    cursor.commit()
     
-    return ("Frase Criptografada", newPhrase, "Chave", key, "Frase Original", originalPhrase, "name", nome)
+    return ("Frase Criptografada", newPhrase, "Chave", key, "Frase Original", originalPhrase)
 
 @app.post('/resolvecifra/{key}/{phrase}')
 
